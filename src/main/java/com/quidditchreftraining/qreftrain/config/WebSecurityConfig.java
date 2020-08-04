@@ -7,9 +7,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
+@EnableWebMvc
+public class WebSecurityConfig  extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
 
     @Override
@@ -29,12 +33,17 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
 
         http.authorizeRequests()
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+
                 .antMatchers("/**").permitAll()
                 .antMatchers("/profile").authenticated()
                 .and()
                 .httpBasic()
 
                 .and().csrf().disable();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 }

@@ -13,6 +13,6 @@ public class NationalGoverningBody {
     @GeneratedValue
     private int id;
     private String name;
-    private String abreviation;
+    private String abbreviation;
     private String location;
 }
