@@ -23,7 +23,7 @@ public class Question {
     @ManyToOne
     private NationalGoverningBody NGB;
     private boolean isRetired;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     private Collection<Answer> answers;
 
     public int getId() {

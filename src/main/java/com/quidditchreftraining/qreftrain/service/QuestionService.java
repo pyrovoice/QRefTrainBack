@@ -39,11 +39,9 @@ public class QuestionService {
 
     @Autowired
     NationalGoverningBodyRepository nationalGoverningBodyRepository;
-    @Autowired
-    QuestionRepository questionRepository;
     private final static String SHEET_ID = "1CGK04DNT5Ym7Pxl7w7HzkqLrsNaLeNS0SkG2nzMNH8Y";
 
-    public boolean loadFromGoogleSheet() throws Exception {
+    public List<Question> loadFromGoogleSheet() throws Exception {
         Credential credential = authorize();
         Sheets driveSheets = new Sheets.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
@@ -136,11 +134,7 @@ public class QuestionService {
                 importedQuestions.add(newQuestion);
             }
         }
-        for(Question question : importedQuestions){
-            Question q = questionRepository.save(question);
-            int a = 1;
-        }
-        return true;
+        return importedQuestions;
     }
 
     private static Credential authorize() throws IOException, GeneralSecurityException {
@@ -154,9 +148,5 @@ public class QuestionService {
         Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
 
         return credential;
-    }
-
-    public List<Question> getAllQuestions() {
-        return questionRepository.findAll();
     }
 }

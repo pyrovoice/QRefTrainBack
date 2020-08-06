@@ -15,11 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 public class QuizController {
 
-    QuestionRepository questionRepository;
 
-    @ResponseBody
-    @GetMapping(path = "quiz/getquestionfortopics")
-    public List<Question> getQuestionsBySubjects(@RequestBody List<QuestionSubject> subjects) {
-        return questionRepository.findByQuestionSubjectIn(subjects);
-    }
 }

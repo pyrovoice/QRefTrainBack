@@ -1,23 +1,26 @@
 package com.quidditchreftraining.qreftrain.dao;
 
+import org.springframework.core.convert.converter.Converter;
+
 public enum QuestionSubject {
 
-    Contacts,
-    Keeper,
-    FieldsAndEquipment,
-    OutOfBoundaries,
-    Process,
-    DelayOfGame,
-    Definition,
-    Advantage,
-    DelayedPenalty,
-    Scoring,
-    SnitchPlay,
-    ImmunityAndGuarding,
-    Reset,
-    Substitution,
+    CONTACTS,
+    KEEPER,
+    FIELDSANDEQUIPMENT,
+    OUTOFBOUNDARIES,
+    PROCESS,
+    DELAYOFGAME,
+    DEFINITION,
+    ADVANTAGE,
+    DELAYEDPENALTY,
+    SCORING,
+    SNITCHPLAY,
+    IMMUNITYANDGUARDING,
+    RESET,
+    SUBSTITUTION,
     NHNF,
     KO,
-    Other,
-    BallInteraction
+    OTHER,
+    BALLINTERACTION
 }
+
