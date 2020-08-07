@@ -1,6 +1,11 @@
 package com.quidditchreftraining.qreftrain.dao;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -9,92 +14,60 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(name = "question")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Question {
     @Id
     @GeneratedValue
     private int id;
-    @Column(unique = true, nullable = false)
     private String publicId;
     @Enumerated
     private QuestionSubject questionSubject;
     private String URLVideo;
     private String questionText;
     private String answerExplanation;
-    @ManyToOne
-    private NationalGoverningBody NGB;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<NationalGoverningBody> ValidNGBs;
     private boolean isRetired;
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<Answer> answers;
 
-    public int getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Question)) {
+            return false;
+        }
+        Question question = (Question) o;
+        for(Answer a: answers){
+            if(!question.getAnswers().contains(a)){
+                return false;
+            }
+        }
+        return new EqualsBuilder()
+                .append(publicId, question.publicId)
+                .append(isRetired, question.isRetired)
+                .append(answerExplanation, question.answerExplanation)
+                .append(ValidNGBs, question.ValidNGBs)
+                .append(questionSubject, question.questionSubject)
+                .append(questionText, question.questionText)
+                .append(URLVideo, question.URLVideo)
+                .isEquals();
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
-    }
-
-    public QuestionSubject getQuestionSubject() {
-        return questionSubject;
-    }
-
-    public void setQuestionSubject(QuestionSubject questionSubject) {
-        this.questionSubject = questionSubject;
-    }
-
-    public String getURLVideo() {
-        return URLVideo;
-    }
-
-    public void setURLVideo(String URLVideo) {
-        this.URLVideo = URLVideo;
-    }
-
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
-
-    public String getAnswerExplanation() {
-        return answerExplanation;
-    }
-
-    public void setAnswerExplanation(String answerExplanation) {
-        this.answerExplanation = answerExplanation;
-    }
-
-    public NationalGoverningBody getNGB() {
-        return NGB;
-    }
-
-    public void setNGB(NationalGoverningBody NGB) {
-        this.NGB = NGB;
-    }
-
-    public boolean isRetired() {
-        return isRetired;
-    }
-
-    public void setRetired(boolean retired) {
-        isRetired = retired;
-    }
-
-    public Collection<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Collection<Answer> answers) {
-        this.answers = answers;
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(publicId)
+                .append(isRetired)
+                .append(answerExplanation)
+                .append(answers)
+                .append(ValidNGBs)
+                .append(questionSubject)
+                .append(questionText)
+                .append(URLVideo)
+                .toHashCode();
     }
 }

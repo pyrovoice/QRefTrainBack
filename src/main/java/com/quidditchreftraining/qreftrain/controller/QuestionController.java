@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
-public class QuestionControler {
+public class QuestionController {
 
     QuestionService questionService;
     @Autowired
@@ -26,11 +26,11 @@ public class QuestionControler {
 
     @ResponseBody
     @GetMapping(path = "question/getquestionsbysubjects")
-    public List<Question> loadQuestionsBySubjects(@RequestParam(required=false) QuestionSubject[] subjects) throws IOException, GeneralSecurityException {
-        if(subjects == null || subjects.length == 0){
+    public List<Question> loadQuestionsBySubjects(@RequestParam(required=false) List<QuestionSubject> subjects) throws IOException, GeneralSecurityException {
+        if(subjects == null || subjects.size() == 0){
             return this.loadAllQuestions();
         }
-        return questionRepository.findByQuestionSubjectIn(Arrays.asList(subjects));
+        return questionRepository.findByQuestionSubjectIn(subjects);
     }
 
     @ResponseBody
